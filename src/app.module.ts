@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthnInfoEntity } from './entities';
-import { AuthModule } from './auth/auth.module';
+import { AuthInfoEntity } from './entities';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { AuthModule } from './auth/auth.module';
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_NAME'),
-          entities: [AuthnInfoEntity],
+          entities: [AuthInfoEntity],
           synchronize: false,
         };
       },
@@ -29,6 +29,7 @@ import { AuthModule } from './auth/auth.module';
       { name: 'AUTH_SERVICE', transport: Transport.TCP },
     ]),
     AuthModule,
+    TypeOrmModule.forFeature([AuthInfoEntity]),
   ],
 
   controllers: [AppController],

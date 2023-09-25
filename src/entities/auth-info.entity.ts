@@ -1,10 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { AbstractEntity } from './abstract.entity';
 
 @Entity('auth_info')
-export class AuthInfoEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class AuthInfoEntity extends AbstractEntity {
   @Column({
     name: 'email',
     nullable: false,
@@ -22,44 +20,4 @@ export class AuthInfoEntity {
     nullable: false,
   })
   token: string;
-
-  @Column({
-    name: 'created_at',
-    nullable: false,
-  })
-  createdAt: Date;
-
-  @Column({
-    name: 'updated_at',
-    nullable: true,
-    default: null,
-  })
-  updatedAt: Date | null;
-
-  @Column({
-    name: 'deleted_at',
-    nullable: true,
-    default: null,
-  })
-  deletedAt: Date | null;
-
-  @Column({
-    name: 'created_by',
-    nullable: false,
-  })
-  createdBy: Date;
-
-  @Column({
-    name: 'updated_by',
-    nullable: true,
-    default: null,
-  })
-  updatedBy: Date | null;
-
-  @Column({
-    name: 'deleted_by',
-    nullable: true,
-    default: null,
-  })
-  deletedBy: Date | null;
 }
