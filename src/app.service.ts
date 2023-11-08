@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthInfoEntity } from './entities';
+import { AuthInfoEntity } from './orms';
 import { findOperatorParser, getListPagingByEntity } from './utils/common';
 import { isEmpty } from 'lodash';
 

@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthInfoEntity } from './entities';
 import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
