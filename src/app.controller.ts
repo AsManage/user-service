@@ -17,6 +17,7 @@ export class AppController {
       'GET-LIST-PAGING': () => this.appSrv.getListPaging(payload, entity),
       UPDATE: () => this.appSrv.update(payload, entity),
       SAVE: () => this.appSrv.save(payload, entity),
+      DELETE: () => this.appSrv.delete(payload, entity),
     };
 
     return await FUNCTION[action]();

@@ -10,8 +10,8 @@ export class UserRoleOrm extends AbstractOrm {
   name: string;
 
   @Column({
-    name: 'group',
+    name: 'tenant_id',
     nullable: false,
   })
-  group: string;
+  tenantId: number;
 }

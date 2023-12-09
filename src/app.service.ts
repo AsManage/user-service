@@ -1,30 +1,41 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthInfoEntity } from './orms';
 import { findOperatorParser, getListPagingByEntity } from './utils/common';
 import { isEmpty } from 'lodash';
+import { UserPermissionOrm, UserRoleOrm } from './orms';
+import { UserPermissionRoleMappingOrm } from './orms/user-role-permission-mapping.orm';
+import { UserInfoOrm } from './orms/user.orm';
 
 @Injectable()
 export class AppService {
   constructor(
-    @InjectRepository(AuthInfoEntity)
-    private authRepo: Repository<AuthInfoEntity>,
+    @InjectRepository(UserPermissionOrm)
+    private userPermissionRepo: Repository<UserPermissionOrm>,
+    @InjectRepository(UserPermissionRoleMappingOrm)
+    private userPermissionRoleMappingRepo: Repository<UserPermissionRoleMappingOrm>,
+    @InjectRepository(UserRoleOrm)
+    private userRoleRepo: Repository<UserRoleOrm>,
+    @InjectRepository(UserInfoOrm)
+    private userInfoRepo: Repository<UserInfoOrm>,
   ) {}
   private AM_USER = {
-    AUTH_INFO: this.authRepo,
+    USER_PERMISSION: this.userPermissionRepo,
+    USER_PERMISSION_ROLE_MAPPING: this.userPermissionRoleMappingRepo,
+    USER_ROLE: this.userRoleRepo,
+    USER_INFO: this.userInfoRepo,
   };
 
   async getOne(payload?: any, entity?: string) {
     const parsePayload = findOperatorParser(payload);
     const repository = this.AM_USER[entity];
-    return await repository(entity).findOne(parsePayload);
+    return await repository.findOne({ where: parsePayload });
   }
 
   async getByIds(payload?: any, entity?: string) {
     const parsePayload = findOperatorParser(payload);
     const repository = this.AM_USER[entity];
-    return await repository(entity).findByIds(parsePayload);
+    return await repository.findByIds(parsePayload);
   }
 
   async getList(payload?: any, entity?: string) {
@@ -38,22 +49,27 @@ export class AppService {
     return await getListPagingByEntity(payload, repository);
   }
 
+  async delete(payload?: any, entity?: string) {
+    const repository = this.AM_USER[entity];
+    return await repository.delete({ ...payload });
+  }
+
   async update(payload?: any, entity?: string) {
     const repository = this.AM_USER[entity];
     const { conditions, data, id } = payload;
-    findOperatorParser(conditions);
+    const conditionParser = findOperatorParser(conditions);
     const updateData = Object.assign(
       data,
-      !isEmpty(id) ? { updatedAt: new Date(), updatedBy: id } : {},
+      id ? { updatedAt: new Date(), updatedBy: id } : {},
     );
-    const result = await repository.update(conditions, updateData);
+    const result = await repository.update(conditionParser, updateData);
     if (!result.affected) {
       return {
         status: 404,
         message: 'NOT_FOUND',
       };
     }
-    return this.getOne(conditions, entity);
+    return repository.findOne({ where: conditionParser }, entity);
   }
   async save(payload?: any, entity?: string) {
     const repository = this.AM_USER[entity];
@@ -65,7 +81,8 @@ export class AppService {
         createdBy: payload.id,
       });
     }
-    const existed = await this.getOne(checkExisted, entity);
+    const existed = await repository.findOne({ where: checkExisted }, entity);
+    console.log(checkExisted);
     if (!isEmpty(existed)) {
       return {
         status: 400,

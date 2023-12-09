@@ -1,8 +1,8 @@
 import { Entity, Column } from 'typeorm';
 import { AbstractOrm } from './abstract.orm';
 
-@Entity('user')
-export class UserOrm extends AbstractOrm {
+@Entity('user_info')
+export class UserInfoOrm extends AbstractOrm {
   @Column({
     name: 'first_name',
     nullable: true,
@@ -14,18 +14,6 @@ export class UserOrm extends AbstractOrm {
     nullable: true,
   })
   lastName: string;
-
-  @Column({
-    name: 'id_card',
-    nullable: true,
-  })
-  idCard: string;
-
-  @Column({
-    name: 'handover_date',
-    nullable: true,
-  })
-  handoverDate: string;
 
   @Column({
     name: 'location',
@@ -62,12 +50,6 @@ export class UserOrm extends AbstractOrm {
     nullable: true,
   })
   phoneNumber: string;
-
-  @Column({
-    name: 'is_phone_nr_verified',
-    nullable: true,
-  })
-  isPhoneNrVerified: boolean;
 
   @Column({
     name: 'email',

@@ -10,7 +10,7 @@ import {
 import * as moment from 'moment';
 
 export const findOperatorParser = (data) => {
-  const dataParser = data.where || data;
+  const dataParser = data?.where ? data?.where : data;
   Object.keys(dataParser).map((itm) => {
     if (dataParser[itm] && dataParser[itm].type) {
       const { type, value } = dataParser[itm];
@@ -37,7 +37,7 @@ export const findOperatorParser = (data) => {
       }
     }
   });
-  return data;
+  return dataParser;
 };
 export const startDateOfMonthOrDefault = (objData: any = {}) => {
   const { startDate, endDate } = objData;
@@ -60,8 +60,8 @@ export const getListPagingByEntity = async (
   const { pagination, query, order, filter } = data;
   const limit = pagination?.limit;
   const skip = pagination?.page - 1 > 0 ? (pagination?.page - 1) * limit : 0;
-  let conditions = query;
-  if (filter.startDate && filter.endDate) {
+  let conditions = query ? query : {};
+  if (filter?.startDate && filter?.endDate) {
     conditions = {
       ...conditions,
       createdAt: Between(filter.startDate, filter.endDate),
@@ -69,7 +69,7 @@ export const getListPagingByEntity = async (
   }
   conditions = findOperatorParser(conditions);
   const result = await repository.findAndCount({
-    where: [conditions],
+    where: conditions,
     take: pagination?.limit,
     skip,
     order,

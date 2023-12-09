@@ -4,7 +4,9 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
+import { UserPermissionOrm, UserRoleOrm } from './orms';
+import { UserPermissionRoleMappingOrm } from './orms/user-role-permission-mapping.orm';
+import { UserInfoOrm } from './orms/user.orm';
 
 @Module({
   imports: [
@@ -18,17 +20,26 @@ import { AuthModule } from './modules/auth/auth.module';
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_NAME'),
-          entities: [AuthInfoEntity],
+          entities: [
+            UserPermissionOrm,
+            UserPermissionRoleMappingOrm,
+            UserRoleOrm,
+            UserInfoOrm,
+          ],
           synchronize: false,
         };
       },
       inject: [ConfigService],
     }),
     ClientsModule.register([
-      { name: 'AUTH_SERVICE', transport: Transport.TCP },
+      { name: 'USER_SERVICE', transport: Transport.TCP },
     ]),
-    AuthModule,
-    TypeOrmModule.forFeature([AuthInfoEntity]),
+    TypeOrmModule.forFeature([
+      UserPermissionOrm,
+      UserPermissionRoleMappingOrm,
+      UserRoleOrm,
+      UserInfoOrm,
+    ]),
   ],
 
   controllers: [AppController],
