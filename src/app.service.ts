@@ -41,7 +41,7 @@ export class AppService {
   async getList(payload?: any, entity?: string) {
     const parsePayload = findOperatorParser(payload);
     const repository = this.AM_USER[entity];
-    return await repository.find(parsePayload);
+    return await repository.find({ where: parsePayload });
   }
 
   async getListPaging(payload?: any, entity?: string) {
