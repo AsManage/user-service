@@ -86,10 +86,4 @@ export class UserInfoOrm extends AbstractOrm {
     nullable: true,
   })
   authId: number;
-
-  @Column({
-    name: 'tenant_id',
-    nullable: true,
-  })
-  tenantId: number;
 }
