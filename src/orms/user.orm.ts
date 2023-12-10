@@ -80,4 +80,10 @@ export class UserInfoOrm extends AbstractOrm {
     nullable: true,
   })
   roleId: string;
+
+  @Column({
+    name: 'auth_id',
+    nullable: true,
+  })
+  authId: number;
 }
