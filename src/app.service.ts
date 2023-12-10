@@ -6,6 +6,7 @@ import { isEmpty } from 'lodash';
 import { UserPermissionOrm, UserRoleOrm } from './orms';
 import { UserPermissionRoleMappingOrm } from './orms/user-role-permission-mapping.orm';
 import { UserInfoOrm } from './orms/user.orm';
+import { UserPermissionGroupOrm } from './orms/user-permission-group.orm';
 
 @Injectable()
 export class AppService {
@@ -18,12 +19,15 @@ export class AppService {
     private userRoleRepo: Repository<UserRoleOrm>,
     @InjectRepository(UserInfoOrm)
     private userInfoRepo: Repository<UserInfoOrm>,
+    @InjectRepository(UserPermissionGroupOrm)
+    private userPermissionGroupRepo: Repository<UserInfoOrm>,
   ) {}
   private AM_USER = {
     USER_PERMISSION: this.userPermissionRepo,
     USER_PERMISSION_ROLE_MAPPING: this.userPermissionRoleMappingRepo,
     USER_ROLE: this.userRoleRepo,
     USER_INFO: this.userInfoRepo,
+    USER_PERMISSION_GROUP: this.userPermissionGroupRepo,
   };
 
   async getOne(payload?: any, entity?: string) {

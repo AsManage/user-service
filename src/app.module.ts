@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserPermissionOrm, UserRoleOrm } from './orms';
 import { UserPermissionRoleMappingOrm } from './orms/user-role-permission-mapping.orm';
 import { UserInfoOrm } from './orms/user.orm';
+import { UserPermissionGroupOrm } from './orms/user-permission-group.orm';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { UserInfoOrm } from './orms/user.orm';
             UserPermissionRoleMappingOrm,
             UserRoleOrm,
             UserInfoOrm,
+            UserPermissionGroupOrm,
           ],
           synchronize: false,
         };
@@ -39,6 +41,7 @@ import { UserInfoOrm } from './orms/user.orm';
       UserPermissionRoleMappingOrm,
       UserRoleOrm,
       UserInfoOrm,
+      UserPermissionGroupOrm,
     ]),
   ],
 
