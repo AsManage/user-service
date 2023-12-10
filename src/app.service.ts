@@ -80,13 +80,12 @@ export class AppService {
     const { checkExisted, data } = payload;
     if (isEmpty(checkExisted)) {
       return await repository.save({
-        ...payload,
+        ...data,
         createdAt: new Date(),
         createdBy: payload.id,
       });
     }
     const existed = await repository.findOne({ where: checkExisted }, entity);
-    console.log(checkExisted);
     if (!isEmpty(existed)) {
       return {
         status: 400,
