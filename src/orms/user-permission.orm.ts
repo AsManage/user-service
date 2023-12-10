@@ -14,4 +14,10 @@ export class UserPermissionOrm extends AbstractOrm {
     nullable: false,
   })
   description: string;
+
+  @Column({
+    name: 'group_id',
+    nullable: false,
+  })
+  groupId: number;
 }
