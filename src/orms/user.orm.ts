@@ -58,6 +58,12 @@ export class UserInfoOrm extends AbstractOrm {
   email: string;
 
   @Column({
+    name: 'image',
+    nullable: true,
+  })
+  image: string;
+
+  @Column({
     name: 'is_email_verified',
     nullable: true,
   })
